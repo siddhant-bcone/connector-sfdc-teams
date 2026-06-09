@@ -10,6 +10,13 @@
   <name>connector.bcone</name>
   <url>http://maven.apache.org</url>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.0.6</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
@@ -27,25 +34,21 @@
     <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-test</artifactId>
-    <version>4.0.6</version>
 </dependency>
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
-    <version>4.0.6</version>
 </dependency>
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-webflux</artifactId>
-    <version>4.0.6</version>
 </dependency>
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-devtools</artifactId>
-    <version>4.0.6</version>
     <scope>compile</scope>
 </dependency>
 
@@ -77,10 +80,14 @@
     <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>4.0.6</version>
         <configuration>
           <!-- Fully-qualified main class so the plugin can create an executable jar -->
           <mainClass>com.bcone.connector.bcone.App</mainClass>
+          <!-- Create a single executable "fat" jar and disable layering so all deps are packaged together -->
+          <executable>true</executable>
+          <layers>
+            <enabled>false</enabled>
+          </layers>
         </configuration>
         <executions>
           <execution>
