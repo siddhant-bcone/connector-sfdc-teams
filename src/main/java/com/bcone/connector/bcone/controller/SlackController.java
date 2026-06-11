@@ -27,14 +27,15 @@ public class SlackController {
     @PostMapping("/incident")
     public String createIncident(
             @RequestParam("text") String text) {
-    	 IncidentRequest request = new IncidentRequest();
 new Thread(()->{
 		try {
         String[] parts = text.split("\\|", 4);
+        IncidentRequest request = new IncidentRequest();
         request.setPriority(parts[0]);
         request.setSubject(parts[1]);
         request.setDescription(parts[2]);
         request.setOrigin(parts[3]);
+        incidentService.createIncident(request);
 }
 		catch(Exception e)
 		{
@@ -42,7 +43,7 @@ new Thread(()->{
 		}
 }).start();
         return
-               "Incident created with details"+ incidentService.createIncident(request).toString();
+               "Incident created ...";
 
     }
 }
