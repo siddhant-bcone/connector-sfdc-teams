@@ -1,5 +1,7 @@
 package com.bcone.connector.bcone.controller;
 
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,30 +16,29 @@ import com.bcone.connector.bcone.service.IncidentService;
 public class SlackController {
 
     private final IncidentService incidentService;
+    private final Logger logger=LoggerFactory.getLogger(SlackController.class);
 
     public SlackController(IncidentService incidentService) {
         this.incidentService = incidentService;
     }
 
     @PostMapping("/incident")
-    public String createIncident(
+    public IncidentResponse createIncident(
             @RequestParam("text") String text) {
 
-        String[] parts = text.split("\\|", 3);
+        String[] parts = text.split("\\|", 4);
 
-        if (parts.length < 3) {
-            return "Usage: /incident <Priority>|<Subject>|<Description>";
-        }
-
+        logger.info(()->"Text received"+ text);
+        
         IncidentRequest request = new IncidentRequest();
         request.setPriority(parts[0]);
         request.setSubject(parts[1]);
         request.setDescription(parts[2]);
-        request.setOrigin("Slack");
+        request.setOrigin(parts[3]);
 
-        IncidentResponse response =
+        logger.info(()->"Incident created from slack input"+request);
+        return
                 incidentService.createIncident(request);
 
-        return "✅ Incident created successfully";
     }
 }
