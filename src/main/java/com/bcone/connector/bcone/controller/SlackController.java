@@ -23,7 +23,7 @@ public class SlackController {
     }
 
     @PostMapping("/incident")
-    public IncidentResponse createIncident(
+    public String createIncident(
             @RequestParam("text") String text) {
 
         String[] parts = text.split("\\|", 4);
