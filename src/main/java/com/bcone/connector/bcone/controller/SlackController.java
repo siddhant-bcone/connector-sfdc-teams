@@ -1,5 +1,7 @@
 package com.bcone.connector.bcone.controller;
 
+import static org.hamcrest.CoreMatchers.startsWith;
+
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,20 +27,22 @@ public class SlackController {
     @PostMapping("/incident")
     public String createIncident(
             @RequestParam("text") String text) {
-
+    	 IncidentRequest request = new IncidentRequest();
+new Thread(()->{
+		try {
         String[] parts = text.split("\\|", 4);
-
-        logger.info(()->"Text received"+ text);
-        
-        IncidentRequest request = new IncidentRequest();
         request.setPriority(parts[0]);
         request.setSubject(parts[1]);
         request.setDescription(parts[2]);
         request.setOrigin(parts[3]);
-
-        logger.info(()->"Incident created from slack input"+request);
+}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+}).start();
         return
-                incidentService.createIncident(request).toString();
+               "Incident created with details"+ incidentService.createIncident(request).toString();
 
     }
 }
