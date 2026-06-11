@@ -38,7 +38,7 @@ public class SlackController {
 
         logger.info(()->"Incident created from slack input"+request);
         return
-                incidentService.createIncident(request);
+                incidentService.createIncident(request).toString();
 
     }
 }
