@@ -27,6 +27,7 @@ public class SlackController {
     @PostMapping("/incident")
     public String createIncident(
             @RequestParam("text") String text) {
+    	logger.info(()->"Starting thread"+System.currentTimeMillis());
 new Thread(()->{
 		try {
         String[] parts = text.split("\\|", 4);
@@ -42,6 +43,7 @@ new Thread(()->{
 			e.printStackTrace();
 		}
 }).start();
+logger.info(()->"Thread over"+System.currentTimeMillis());
         return
                "Incident created ...";
 
